@@ -1,7 +1,7 @@
 ﻿from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    SERVICE_NAME: str = "ms-ventas-crm"
+    SERVICE_NAME: str = "ms-compras"
     VERSION: str = "0.1.0"
 
     # GCP
