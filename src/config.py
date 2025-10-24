@@ -1,32 +1,27 @@
-﻿from pydantic_settings import BaseSettings
+﻿import os
 
-class Settings(BaseSettings):
-    SERVICE_NAME: str = "ms-compras"
-    VERSION: str = "0.1.0"
+class Settings:
 
-    # GCP
-    GCP_PROJECT: str = "misw4301-g26"
-    GCP_REGION: str = "us-central1"
+    SERVICE_NAME = os.getenv("SERVICE_NAME", "ms-ventas-crm")
+    VERSION = os.getenv("VERSION", "0.1.0")
+    REGION = os.getenv("REGION", "us-central1")
 
-    # Sharding por paÃ­s (CO, MX, EC, PE)
-    DATABASE_URL_CO: str | None = None
-    DATABASE_URL_MX: str | None = None
-    DATABASE_URL_EC: str | None = None
-    DATABASE_URL_PE: str | None = None
+    DB_USER = os.getenv("DB_USER", "postgres")
+    DB_PASSWORD = os.getenv("DB_PASS", "postgres")
+    DB_HOST = os.getenv("DB_HOST", "localhost")
+    DB_PORT = int(os.getenv("DB_PORT", "5432"))
+    DB_NAME = os.getenv("DB_NAME", "db_ms_ventas_crm")
 
-    # Redis
-    REDIS_URL: str | None = None
+    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 
-    # Pub/Sub
-    PUBSUB_TOPIC: str | None = None
+    SQLALCHEMY_DATABASE_URI = (
+    f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
 
-    # BigQuery / Bigtable / GCS
-    BQ_DATASET: str | None = None
-    BT_INSTANCE: str | None = None
-    GCS_BUCKET: str | None = None
-    GCS_FOLDER: str | None = None
-
-    class Config:
-        env_file = ".env"
+    DEFAULT_SCHEMA = os.getenv("DEFAULT_SCHEMA", "co")
+    COUNTRY_HEADER = os.getenv("COUNTRY_HEADER", "X-Country")
+    GATEWAY_BASE_URL = os.getenv("GATEWAY_BASE_URL", "https://medisupply-gw-5k2l9pfv.uc.gateway.dev")
+    GCS_BUCKET_PREFIX = os.getenv("GCS_BUCKET_PREFIX", "misw4301-g26-medi")
 
 settings = Settings()
