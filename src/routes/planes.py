@@ -40,6 +40,59 @@ def crear_plan(
     )
 
 
+@router.get("", response_model=list[PlanDeVentasSalida])
+def obtener_planes(
+    db: Session = Depends(get_session),
+    x_country: str | None = Header(default=None, alias=settings.COUNTRY_HEADER),
+):
+    svc = ServicioPlanDeVentas(db, x_country or settings.DEFAULT_SCHEMA)
+    planes = svc.obtener_todos()
+    return [
+        PlanDeVentasSalida(
+            id=plan.id,
+            id_vendedor=plan.id_vendedor,
+            periodo=plan.periodo,
+            territorio=plan.territorio,
+            meta_monto=float(plan.meta_monto or 0),
+            meta_unidades=plan.meta_unidades,
+            meta_clientes=plan.meta_clientes,
+            fecha_inicio=plan.fecha_inicio,
+            fecha_fin=plan.fecha_fin,
+            activo=plan.activo,
+            ids_productos=[p.id_producto for p in plan.productos],
+            id_cliente_objetivo=plan.id_cliente_objetivo,
+        )
+        for plan in planes
+    ]
+
+
+@router.get("/vendedor/{id_vendedor}", response_model=list[PlanDeVentasSalida])
+def obtener_planes_por_vendedor(
+    id_vendedor: str,
+    db: Session = Depends(get_session),
+    x_country: str | None = Header(default=None, alias=settings.COUNTRY_HEADER),
+):
+    svc = ServicioPlanDeVentas(db, x_country or settings.DEFAULT_SCHEMA)
+    planes = svc.obtener_por_vendedor(id_vendedor)
+    return [
+        PlanDeVentasSalida(
+            id=plan.id,
+            id_vendedor=plan.id_vendedor,
+            periodo=plan.periodo,
+            territorio=plan.territorio,
+            meta_monto=float(plan.meta_monto or 0),
+            meta_unidades=plan.meta_unidades,
+            meta_clientes=plan.meta_clientes,
+            fecha_inicio=plan.fecha_inicio,
+            fecha_fin=plan.fecha_fin,
+            activo=plan.activo,
+            ids_productos=[p.id_producto for p in plan.productos],
+            id_cliente_objetivo=plan.id_cliente_objetivo,
+        )
+        for plan in planes
+    ]
+
+
 @router.get("/{id_plan}/progreso", response_model=list[ProgresoSalida])
 def obtener_progreso(id_plan: str, db: Session = Depends(get_session)):
     from sqlalchemy import select

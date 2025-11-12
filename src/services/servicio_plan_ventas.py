@@ -42,10 +42,16 @@ class ServicioPlanDeVentas:
         self.db.flush()
         return plan
 
-
     def obtener(self, id_plan: str) -> models.PlanDeVentas | None:
         return self.db.get(models.PlanDeVentas, id_plan)
 
+    def obtener_todos(self) -> list[models.PlanDeVentas]:
+        return self.db.execute(select(models.PlanDeVentas)).scalars().all()
+
+    def obtener_por_vendedor(self, id_vendedor: str) -> list[models.PlanDeVentas]:
+        return self.db.execute(
+            select(models.PlanDeVentas).where(models.PlanDeVentas.id_vendedor == id_vendedor)
+        ).scalars().all()
 
     def recalcular_para_fecha(self, plan: models.PlanDeVentas, d: date) -> models.ProgresoPlanDeVentas:
         productos_set = {str(p.id_producto) for p in plan.productos}
