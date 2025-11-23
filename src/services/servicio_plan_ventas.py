@@ -3,10 +3,9 @@ from uuid import uuid4
 from datetime import date
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 from src.domain import models
 from src.domain.schemas import PlanDeVentasCrear
-from src.infrastructure.http import MsClient  # Usa tu cliente existente
+from src.infrastructure.http import MsClient
 from decimal import Decimal
 
 _MAX_LIMIT = 200

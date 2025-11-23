@@ -24,4 +24,10 @@ class Settings:
     GATEWAY_BASE_URL = os.getenv("GATEWAY_BASE_URL", "https://medisupply-gw-5k2l9pfv.uc.gateway.dev")
     GCS_BUCKET_PREFIX = os.getenv("GCS_BUCKET_PREFIX", "misw4301-g26-medi")
 
+    TOPIC_PEDIDOS = os.getenv("TOPIC_PEDIDOS")
+    TOPIC_INVENTARIO = os.getenv("TOPIC_INVENTARIO")
+    TOPIC_LOGISTICA = os.getenv("TOPIC_LOGISTICA")
+    TOPIC_VENTAS_CRM = os.getenv("TOPIC_VENTAS_CRM")
+    TOPIC_TELEMETRIA = os.getenv("TOPIC_TELEMETRIA")
+
 settings = Settings()

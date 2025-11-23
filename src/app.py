@@ -13,6 +13,7 @@ from .config import settings
 from .routes.health import router as health_router
 from .routes.planes import router as planes_router
 from .routes.visitas import router as visitas_router
+from .routes.pubsub import router as pubsub_router
 
 
 log = logging.getLogger(__name__)
@@ -56,3 +57,4 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(planes_router)
 app.include_router(visitas_router)
+app.include_router(pubsub_router)
